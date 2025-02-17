@@ -1,0 +1,29 @@
+# Minimum Lovable Product
+
+- Users
+  - Login
+  - Manually create users
+- Manage albums
+  - Create
+  - Delete
+  - Set params
+    - title
+    - password protection
+    - slug
+    - cover card picture
+    - enabled
+    - font (offer two fonts)
+    - allow download
+  - Upload pictures
+  - share link
+  - share link with password
+- Render albums
+  - cover card with title
+  - prompt for password
+  - gallery mode
+  - list mode
+  - download all pictures
+  - download all pictures
+  - full screen view
+  - mobile view
+  - desktop view
