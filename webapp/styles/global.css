@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @import "primeicons/primeicons.css";
+@import "./transitions.css";
+@import "./fonts.css";
 
 html {
 	font-family: "Inter", sans-serif;
@@ -9,4 +11,10 @@ html {
 html,
 body {
 	overscroll-behavior: none !important;
+}
+
+:root {
+	--album-view-background-color: #fff;
+	--album-view-text-color: #000;
+	--album-view-base-border-radius: 4px;
 }

@@ -72,7 +72,7 @@ export default defineEventHandler(async (event) => {
       album &&
       (
         await Promise.all(
-          album.pictures.map(async (pictureId) => {
+          album.sortedPictureIds.map(async (pictureId) => {
             const albumPicture = await getAlbumPictureById(pictureId);
 
             if (!albumPicture) {
@@ -84,14 +84,14 @@ export default defineEventHandler(async (event) => {
             const presignedFileUrl = getS3Client()
               .file(albumPicture.originalImage.s3ObjectKey)
               .presign({
-                expiresIn: 3600,
+                expiresIn: 86400,
                 type: albumPicture.originalImage.mimeType,
               });
 
             const presignedFileUrlOptimizedImage = getS3Client()
               .file(albumPicture.optimizedImage.s3ObjectKey)
               .presign({
-                expiresIn: 3600,
+                expiresIn: 86400,
                 type: albumPicture.optimizedImage.mimeType,
               });
 
@@ -103,7 +103,9 @@ export default defineEventHandler(async (event) => {
           }),
         )
       ).sort(
-        (a, b) => album.pictures.indexOf(a.id) - album.pictures.indexOf(b.id),
+        (a, b) =>
+          album.sortedPictureIds.indexOf(a.id) -
+          album.sortedPictureIds.indexOf(b.id),
       ),
   } as const;
 });

@@ -8,7 +8,12 @@ export default {
           title: "Album not found",
         },
         passwordProtection: {
+          passwordPlaceholder: "Password",
+          unlockButton: "Get access",
           invalidPassword: "Password is incorrect",
+        },
+        cover: {
+          openAlbum: "Open album",
         },
       },
     },

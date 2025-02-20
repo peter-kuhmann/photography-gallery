@@ -2,13 +2,12 @@
 import AlbumGallery from "~/components/AlbumView/AlbumGallery.vue";
 import AlbumNotFound from "~/components/AlbumView/AlbumNotFound.vue";
 import AlbumPasswordProtectionScreen from "~/components/AlbumView/AlbumPasswordProtectionScreen.vue";
-import type { H3Error } from "h3";
 
 const slug = useRoute().params.slug;
 const headers = useRequestHeaders();
 const albumPassword = ref<string | undefined>(undefined);
 
-const { data, error } = await useAsyncData(
+const { data } = await useAsyncData(
   () => {
     return $fetch(`/api/album/${slug}`, {
       headers,
@@ -24,15 +23,19 @@ const { data, error } = await useAsyncData(
 </script>
 
 <template>
-  <p v-if="!data">loading</p>
+  <div class="w-full h-screen">
+    <transition name="cross-fade">
+      <p v-if="!data">loading</p>
 
-  <AlbumNotFound v-else-if="!data.success && data.reason === 'NOT_FOUND'" />
+      <AlbumNotFound v-else-if="!data.success && data.reason === 'NOT_FOUND'" />
 
-  <AlbumPasswordProtectionScreen
-    v-else-if="!data.success && data.reason === 'NOT_AUTHORIZED'"
-    :password-incorrect="data.invalidPassword"
-    @password-entered="(password) => (albumPassword = password)"
-  />
+      <AlbumPasswordProtectionScreen
+        v-else-if="!data.success && data.reason === 'NOT_AUTHORIZED'"
+        :password-incorrect="data.invalidPassword"
+        @password-entered="(password) => (albumPassword = password)"
+      />
 
-  <AlbumGallery v-else :data />
+      <AlbumGallery v-else :data />
+    </transition>
+  </div>
 </template>

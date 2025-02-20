@@ -3,11 +3,7 @@ import sharp from "sharp";
 import { getEnv } from "~/env";
 import { createAlbum, updateAlbum } from "~/infrastructure/database/dao/Album";
 import { createAlbumPicture } from "~/infrastructure/database/dao/AlbumPicture";
-import {
-  createUser,
-  getUserByEmail,
-  updateUser,
-} from "~/infrastructure/database/dao/User";
+import { createUser, updateUser } from "~/infrastructure/database/dao/User";
 import { getDb } from "~/infrastructure/database/db";
 import { getS3Client } from "~/infrastructure/s3/client";
 import { S3_DIRECTORIES } from "~/infrastructure/s3/constants";
@@ -27,18 +23,40 @@ async function main() {
     enabled: true,
     access: { type: "PUBLIC" },
     slug: "test_album_1",
-    title: "Test Album 1",
+    title: "Junge Hasenfamilie",
+    description:
+      "Januar 2025: Es war mir eine Ehre, eure junge Familie auf analogem Film festzuhalten.\n\nFotos aufgenommen mit einer Leica M2 auf Ilford Delta 3200.\n\nAlles Liebe,\nPeter",
     ownerUserId: user.id,
-    pictures: [],
+    sortedPictureIds: [],
+    style: {
+      backgroundColor: "#fff",
+      textColor: "#222",
+      baseBorderRadius: "8px",
+      font: "Cormorant Garamond",
+      cover: {
+        type: "MODERN",
+      },
+    },
   });
 
   let album2 = await createAlbum({
     enabled: true,
     access: { type: "PASSWORD_PROTECTED", password: "yellow42" },
     slug: "test_album_2",
-    title: "Test Album 2",
+    title: "Junge Hasenfamilie",
+    description:
+      "Januar 2025: Es war mir eine Ehre, eure junge Familie auf analogem Film festzuhalten.\n\nFotos aufgenommen mit einer Leica M2 auf Ilford Delta 3200.\n\nAlles Liebe,\nPeter",
     ownerUserId: user.id,
-    pictures: [],
+    sortedPictureIds: [],
+    style: {
+      backgroundColor: "#17191c",
+      textColor: "#e6e6e6",
+      baseBorderRadius: "0px",
+      font: "Zilla Slab",
+      cover: {
+        type: "MODERN",
+      },
+    },
   });
 
   user = await updateUser(user, {
@@ -119,11 +137,11 @@ async function main() {
       });
 
       album = await updateAlbum(album, {
-        pictures: [...album.pictures, albumPicture.id],
+        sortedPictureIds: [...album.sortedPictureIds, albumPicture.id],
       });
 
       album2 = await updateAlbum(album2, {
-        pictures: [...album2.pictures, albumPicture.id],
+        sortedPictureIds: [...album2.sortedPictureIds, albumPicture.id],
       });
 
       console.log("... done ✅");

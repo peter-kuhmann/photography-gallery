@@ -1,6 +1,8 @@
 import Aura from "@primevue/themes/aura";
 import "@nuxt/fonts";
 import tailwindcss from "@tailwindcss/vite";
+import { SUPPORTED_ALBUM_VIEW_FONTS } from "~/infrastructure/constants";
+import { albumFontNameToClass } from "~/infrastructure/utils";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -27,7 +29,7 @@ export default defineNuxtConfig({
     },
   },
   fonts: {
-    providers: {},
+    provider: "google",
   },
   i18n: {
     vueI18n: "./i18n/config.ts",
@@ -49,5 +51,18 @@ export default defineNuxtConfig({
   },
   svgo: {
     defaultImport: "component",
+  },
+  hooks: {
+    "build:before": async () => {
+      let generatedCss = "";
+
+      for (const { name, fallback } of SUPPORTED_ALBUM_VIEW_FONTS) {
+        generatedCss += `.${albumFontNameToClass(name)} {\n`;
+        generatedCss += `  font-family: "${name}", ${fallback};\n`;
+        generatedCss += `}\n\n`;
+      }
+
+      await Bun.write(import.meta.dir + "/styles/fonts.css", generatedCss);
+    },
   },
 });

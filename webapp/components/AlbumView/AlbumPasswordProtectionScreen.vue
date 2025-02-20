@@ -32,11 +32,18 @@ function onFormSubmit(event: FormSubmitEvent) {
       <InputText
         type="password"
         name="password"
-        placeholder="password"
+        :placeholder="
+          t('public.album.view.passwordProtection.passwordPlaceholder')
+        "
         class="text-center"
         autofocus
       />
-      <Button type="submit" severity="secondary" label="log in" />
+
+      <Button
+        type="submit"
+        severity="secondary"
+        :label="t('public.album.view.passwordProtection.unlockButton')"
+      />
 
       <p v-if="passwordIncorrect" class="text-red-600">
         {{ t("public.album.view.passwordProtection.invalidPassword") }}

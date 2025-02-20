@@ -1,0 +1,7 @@
+- album view
+  - url based cover/image navigation
+  - album vars
+    - color etc.
+    - cover card style
+      - two variants (plain and thumbnail)
+  - respect enabled flag
